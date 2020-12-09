@@ -1,0 +1,22 @@
+<div class="selector-bar text-right">
+  <button
+    type="button"
+    class="btn btn-outline-info float-left"
+    (click)="randomizeAndDrawArray()"
+  >
+    Generate New Array
+  </button>
+
+  <button type="button" class="btn btn-outline-success sort-button">
+    Merge Sort
+  </button>
+
+  <button type="button" class="btn btn-outline-success sort-button">
+    Bubble Sort
+  </button>
+</div>
+<div class="sorting-area">
+  <ng-container *ngFor="let item of _targetArray">
+    <div class="element-bar" style.height="{{ item }}vh"></div>
+  </ng-container>
+</div>
