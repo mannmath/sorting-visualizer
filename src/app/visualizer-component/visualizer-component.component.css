@@ -1,0 +1,35 @@
+.selector-bar {
+  position: relative;
+  background-color: rgb(53, 53, 53);
+  padding-left: 8vw;
+  padding-right: 8vw;
+}
+
+.btn {
+  margin: 5px;
+  position: relative;
+}
+
+@media screen and (max-width: 768px) {
+  .btn {
+    width: 100%;
+    display: block;
+    margin: 5px 0;
+  }
+}
+
+/* Sort visualizer */
+.sorting-area {
+  position: absolute;
+  left: 10vw;
+  transform: rotate(180deg);
+}
+
+.element-bar {
+  position: relative;
+  background-color: turquoise;
+  width: 13px;
+  display: inline-block;
+  vertical-align: bottom;
+  margin: 2px 1px 0px 1px;
+}
