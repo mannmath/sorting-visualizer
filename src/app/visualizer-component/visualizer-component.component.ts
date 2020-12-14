@@ -77,23 +77,48 @@ export class VisualizerComponentComponent implements OnInit {
     let animations: any[] = this.animator.getbubbleSortAnimations(
       this._targetArray
     );
+    let timeMultiplier = 1;
+    let lastFinalizedIndex = -1;
     for (const animation of animations) {
       // first highlight the currently compared elements
-      for (const index of animation.compared) {
-        this.findAndColorElement(index, COMPARISON_COLOR);
-      }
+      setTimeout(() => {
+        for (const index of animation.compared) {
+          this.findAndColorElement(index, COMPARISON_COLOR);
+        }
+      }, 1000 * timeMultiplier);
       if (animation.swapped) {
-        for (const index of Object.keys(animation.post_compare)) {
-          console.log(animation.post_compare[parseInt(index)]);
-          setTimeout(() => {
-            this.findAndReHeightElement(
+        setTimeout(() => {
+          for (const index of Object.keys(animation.post_compare)) {
+            this.findAndRescaleElement(
               parseInt(index),
               animation.post_compare[parseInt(index)]
             );
-          }, 1000);
-        }
+            this.findAndColorElement(parseInt(index), SWAP_COLOR);
+          }
+        }, 1000 * timeMultiplier + 500);
       }
+      setTimeout(() => {
+        for (const index of animation.compared) {
+          this.findAndColorElement(index, INITIAL_COLOR);
+        }
+      }, 1000 * timeMultiplier + 700);
+      setTimeout(() => {
+        if (animation.finalized) {
+          this.findAndColorElement(
+            animation.finalized,
+            FINALIZED_POSITION_COLOR
+          );
+          lastFinalizedIndex = animation.finalized;
+        }
+      }, 1000 * timeMultiplier + 700);
+      timeMultiplier += 1;
     }
+    setTimeout(() => {
+      for (let index = 0; index < lastFinalizedIndex; index++) {
+        console.log(index);
+        this.findAndColorElement(index, FINALIZED_POSITION_COLOR);
+      }
+    }, 1000 * timeMultiplier + 800);
   }
 
   private findAndColorElement(index: number, target_color: string) {
@@ -103,7 +128,7 @@ export class VisualizerComponentComponent implements OnInit {
     }
   }
 
-  private findAndReHeightElement(index: number, target_height: number) {
+  private findAndRescaleElement(index: number, target_height: number) {
     let targetDiv = <HTMLDivElement>document.getElementById(index.toString());
     if (targetDiv != null) {
       targetDiv.style.height = target_height.toString() + 'vh';
