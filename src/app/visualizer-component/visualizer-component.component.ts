@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { SortingAlgorithmsService } from '../sorting-algorithms.service';
 
 // how many elements should be drawn in the array
@@ -17,6 +17,8 @@ const COMPARISON_COLOR = 'red';
 const SWAP_COLOR = 'green';
 // color when the position of an element in finalized
 const FINALIZED_POSITION_COLOR = 'violet';
+// control animation speed (in millis)
+const ANIMATION_SPEED = 1000;
 
 @Component({
   selector: 'app-visualizer-component',
@@ -85,7 +87,9 @@ export class VisualizerComponentComponent implements OnInit {
         for (const index of animation.compared) {
           this.findAndColorElement(index, COMPARISON_COLOR);
         }
-      }, 1000 * timeMultiplier);
+      }, ANIMATION_SPEED * timeMultiplier);
+
+      // perform swapping animation only if a swap was done in the first place.
       if (animation.swapped) {
         setTimeout(() => {
           for (const index of Object.keys(animation.post_compare)) {
@@ -95,13 +99,17 @@ export class VisualizerComponentComponent implements OnInit {
             );
             this.findAndColorElement(parseInt(index), SWAP_COLOR);
           }
-        }, 1000 * timeMultiplier + 500);
+        }, ANIMATION_SPEED * timeMultiplier + 500);
       }
+
+      // reset bars to the initial color after swap check
       setTimeout(() => {
         for (const index of animation.compared) {
           this.findAndColorElement(index, INITIAL_COLOR);
         }
-      }, 1000 * timeMultiplier + 700);
+      }, ANIMATION_SPEED * timeMultiplier + 700);
+
+      // animate finalized element if any
       setTimeout(() => {
         if (animation.finalized) {
           this.findAndColorElement(
@@ -110,15 +118,16 @@ export class VisualizerComponentComponent implements OnInit {
           );
           lastFinalizedIndex = animation.finalized;
         }
-      }, 1000 * timeMultiplier + 700);
+      }, ANIMATION_SPEED * timeMultiplier + 700);
       timeMultiplier += 1;
     }
+
+    // animate remaining indices as finalized, as sorting is now finished.
     setTimeout(() => {
       for (let index = 0; index < lastFinalizedIndex; index++) {
-        console.log(index);
         this.findAndColorElement(index, FINALIZED_POSITION_COLOR);
       }
-    }, 1000 * timeMultiplier + 800);
+    }, ANIMATION_SPEED * timeMultiplier + 800);
   }
 
   private findAndColorElement(index: number, target_color: string) {
