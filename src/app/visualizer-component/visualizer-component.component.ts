@@ -18,7 +18,7 @@ const SWAP_COLOR = 'green';
 // color when the position of an element in finalized
 const FINALIZED_POSITION_COLOR = 'violet';
 // control animation speed (in millis)
-const ANIMATION_SPEED = 1000;
+const ANIMATION_SPEED = 50;
 
 @Component({
   selector: 'app-visualizer-component',
@@ -61,24 +61,24 @@ export class VisualizerComponentComponent implements OnInit {
   }
 
   public randomizeAndDrawArray(): void {
-    const array: any[] = [50, 10, 80, 20, 40];
-    // const array: any[] = [];
-    // for (let index = 0; index < LENGTH_OF_ARRAY; index++) {
-    //   const element = getRandomizedHeight(
-    //     START_HEIGHT_OF_ARRAY_ELEM,
-    //     MAX_HEIGHT_OF_ARRAY_ELEM
-    //   );
-    //   array.push(element);
-    // }
+    // const array: any[] = [50, 10, 80, 20, 40];
+    const array: any[] = [];
+    for (let index = 0; index < length_of_array; index++) {
+      const element = getRandomizedHeight(
+        START_HEIGHT_OF_ARRAY_ELEM,
+        MAX_HEIGHT_OF_ARRAY_ELEM
+      );
+      array.push(element);
+    }
     // reverse is done because our visualizer is 180 rotated.
     array.reverse();
     this.setTargetArray(array);
   }
 
   public performBubbleSort(): void {
-    let animations: any[] = this.animator.getbubbleSortAnimations(
-      this._targetArray
-    );
+    let animations: any[] = this.animator.getbubbleSortAnimations([
+      ...this._targetArray,
+    ]);
     let timeMultiplier = 1;
     let lastFinalizedIndex = -1;
     for (const animation of animations) {
@@ -99,7 +99,7 @@ export class VisualizerComponentComponent implements OnInit {
             );
             this.findAndColorElement(parseInt(index), SWAP_COLOR);
           }
-        }, ANIMATION_SPEED * timeMultiplier + 500);
+        }, ANIMATION_SPEED * timeMultiplier + ANIMATION_SPEED / 2);
       }
 
       // reset bars to the initial color after swap check
@@ -107,7 +107,7 @@ export class VisualizerComponentComponent implements OnInit {
         for (const index of animation.compared) {
           this.findAndColorElement(index, INITIAL_COLOR);
         }
-      }, ANIMATION_SPEED * timeMultiplier + 700);
+      }, ANIMATION_SPEED * timeMultiplier + ANIMATION_SPEED / 1.4285);
 
       // animate finalized element if any
       setTimeout(() => {
@@ -118,7 +118,7 @@ export class VisualizerComponentComponent implements OnInit {
           );
           lastFinalizedIndex = animation.finalized;
         }
-      }, ANIMATION_SPEED * timeMultiplier + 700);
+      }, ANIMATION_SPEED * timeMultiplier + ANIMATION_SPEED / 1.4285);
       timeMultiplier += 1;
     }
 
@@ -127,7 +127,7 @@ export class VisualizerComponentComponent implements OnInit {
       for (let index = 0; index < lastFinalizedIndex; index++) {
         this.findAndColorElement(index, FINALIZED_POSITION_COLOR);
       }
-    }, ANIMATION_SPEED * timeMultiplier + 800);
+    }, ANIMATION_SPEED * timeMultiplier + ANIMATION_SPEED / 1.25);
   }
 
   private findAndColorElement(index: number, target_color: string) {

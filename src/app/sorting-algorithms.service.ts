@@ -6,13 +6,38 @@ import { Injectable } from '@angular/core';
 export class SortingAlgorithmsService {
   constructor() {}
 
-  public getbubbleSortAnimations([]: any) {
+  public getbubbleSortAnimations(input: any[]) {
+    // reverse is done to balance out the earlier reverse.
+    input.reverse();
     var animation = [];
-
-    for (let index = 0; index < animation.length; index++) {
-      // const element = array[index];
+    var isSwapped: boolean = false;
+    for (let i = 0; i < input.length; i++) {
+      for (let j = 0; j < input.length - i - 1; j++) {
+        var animation_object = {};
+        var compared = false;
+        animation_object['compared'] = [j, j + 1];
+        if (input[j] > input[j + 1]) {
+          isSwapped = compared = true;
+          let temp = input[j];
+          input[j] = input[j + 1];
+          input[j + 1] = temp;
+        }
+        animation_object['swapped'] = compared;
+        if (compared) {
+          animation_object['post_compare'] = {};
+          animation_object['post_compare'][j] = input[j];
+          animation_object['post_compare'][j + 1] = input[j + 1];
+        }
+        // when j is at its last step, means the next value is already finalized.
+        if (j == input.length - i - 2) {
+          animation_object['finalized'] = input.length - i - 1;
+        }
+        animation.push(animation_object);
+      }
+      if (!isSwapped) {
+        break;
+      }
     }
-
     return animation;
   }
 }
