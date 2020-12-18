@@ -1,5 +1,6 @@
 <div class="selector-bar text-right">
   <button
+    id="randomize-array"
     type="button"
     class="btn btn-outline-info float-left"
     (click)="randomizeAndDrawArray()"
@@ -7,11 +8,16 @@
     Generate New Array
   </button>
 
-  <button type="button" class="btn btn-outline-success sort-button">
+  <button
+    type="button"
+    class="btn btn-outline-success sort-button"
+    id="mergesort-button"
+  >
     Merge Sort
   </button>
 
   <button
+    id="bubblesort-button"
     type="button"
     class="btn btn-outline-success sort-button"
     (click)="performBubbleSort()"

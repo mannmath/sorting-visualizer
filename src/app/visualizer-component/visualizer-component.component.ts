@@ -18,7 +18,7 @@ const SWAP_COLOR = 'green';
 // color when the position of an element in finalized
 const FINALIZED_POSITION_COLOR = 'violet';
 // control animation speed (in millis)
-const ANIMATION_SPEED = 50;
+const ANIMATION_SPEED = 10;
 
 @Component({
   selector: 'app-visualizer-component',
@@ -27,6 +27,8 @@ const ANIMATION_SPEED = 50;
 })
 export class VisualizerComponentComponent implements OnInit {
   _targetArray = [];
+  _sortInProgress = false;
+  _isSorted = false;
   constructor(
     public breakpointObserver: BreakpointObserver,
     private animator: SortingAlgorithmsService
@@ -41,9 +43,11 @@ export class VisualizerComponentComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    var widthInPixels: number = event.target.innerWidth;
-    length_of_array = Math.round(0.05344070278 * widthInPixels);
-    this.randomizeAndDrawArray();
+    if (!this._sortInProgress) {
+      var widthInPixels: number = event.target.innerWidth;
+      length_of_array = Math.round(0.05344070278 * widthInPixels);
+      this.randomizeAndDrawArray();
+    }
   }
 
   ngOnInit(): void {
@@ -62,6 +66,8 @@ export class VisualizerComponentComponent implements OnInit {
 
   public randomizeAndDrawArray(): void {
     // const array: any[] = [50, 10, 80, 20, 40];
+    this._isSorted = false;
+    this.disableOrEnableButtonsDuringSort('enable');
     const array: any[] = [];
     for (let index = 0; index < length_of_array; index++) {
       const element = getRandomizedHeight(
@@ -73,12 +79,21 @@ export class VisualizerComponentComponent implements OnInit {
     // reverse is done because our visualizer is 180 rotated.
     array.reverse();
     this.setTargetArray(array);
+    // some of the bars were still purple after randomizing array.
+    for (let index = 0; index < this._targetArray.length; index++) {
+      this.findAndColorElement(index, INITIAL_COLOR);
+    }
   }
 
   public performBubbleSort(): void {
+    if (this._isSorted) {
+      return;
+    }
+    this._sortInProgress = true;
     let animations: any[] = this.animator.getbubbleSortAnimations([
       ...this._targetArray,
     ]);
+    this.disableOrEnableButtonsDuringSort('disable');
     let timeMultiplier = 1;
     let lastFinalizedIndex = -1;
     for (const animation of animations) {
@@ -127,6 +142,9 @@ export class VisualizerComponentComponent implements OnInit {
       for (let index = 0; index < lastFinalizedIndex; index++) {
         this.findAndColorElement(index, FINALIZED_POSITION_COLOR);
       }
+      this._isSorted = true;
+      this.disableOrEnableButtonsDuringSort('enable');
+      this._sortInProgress = false;
     }, ANIMATION_SPEED * timeMultiplier + ANIMATION_SPEED / 1.25);
   }
 
@@ -141,6 +159,30 @@ export class VisualizerComponentComponent implements OnInit {
     let targetDiv = <HTMLDivElement>document.getElementById(index.toString());
     if (targetDiv != null) {
       targetDiv.style.height = target_height.toString() + 'vh';
+    }
+  }
+
+  private disableOrEnableButtonsDuringSort(action: string) {
+    let randomizeButton = <HTMLButtonElement>(
+      document.getElementById('randomize-array')
+    );
+    let mergeSortButton = <HTMLButtonElement>(
+      document.getElementById('mergesort-button')
+    );
+    let bubbleSortButton = <HTMLButtonElement>(
+      document.getElementById('bubblesort-button')
+    );
+    // TODO: add other buttons here
+    if (action == 'disable') {
+      randomizeButton.disabled = true;
+      mergeSortButton.disabled = true;
+      bubbleSortButton.disabled = true;
+    } else {
+      if (!this._isSorted) {
+        mergeSortButton.disabled = false;
+        bubbleSortButton.disabled = false;
+      }
+      randomizeButton.disabled = false;
     }
   }
 }
