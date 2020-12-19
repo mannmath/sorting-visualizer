@@ -85,6 +85,8 @@ export class VisualizerComponentComponent implements OnInit {
     }
   }
 
+  public performMergeSort(): void {}
+
   public performBubbleSort(): void {
     if (this._isSorted) {
       return;
@@ -95,7 +97,7 @@ export class VisualizerComponentComponent implements OnInit {
     ]);
     this.disableOrEnableButtonsDuringSort('disable');
     let timeMultiplier = 1;
-    let lastFinalizedIndex = -1;
+    let lastFinalizedIndex = this._targetArray.length;
     for (const animation of animations) {
       // first highlight the currently compared elements
       setTimeout(() => {
