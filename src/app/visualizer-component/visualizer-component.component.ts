@@ -65,17 +65,17 @@ export class VisualizerComponentComponent implements OnInit {
   }
 
   public randomizeAndDrawArray(): void {
-    // const array: any[] = [50, 10, 80, 20, 40];
+    const array: any[] = [50, 10, 80, 20, 40];
     this._isSorted = false;
     this.disableOrEnableButtonsDuringSort('enable');
-    const array: any[] = [];
-    for (let index = 0; index < length_of_array; index++) {
-      const element = getRandomizedHeight(
-        START_HEIGHT_OF_ARRAY_ELEM,
-        MAX_HEIGHT_OF_ARRAY_ELEM
-      );
-      array.push(element);
-    }
+    // const array: any[] = [];
+    // for (let index = 0; index < length_of_array; index++) {
+    //   const element = getRandomizedHeight(
+    //     START_HEIGHT_OF_ARRAY_ELEM,
+    //     MAX_HEIGHT_OF_ARRAY_ELEM
+    //   );
+    //   array.push(element);
+    // }
     // reverse is done because our visualizer is 180 rotated.
     array.reverse();
     this.setTargetArray(array);
@@ -85,7 +85,9 @@ export class VisualizerComponentComponent implements OnInit {
     }
   }
 
-  public performMergeSort(): void {}
+  public performMergeSort(): void {
+    this.animator.getMergeSortAnimations([...this._targetArray]);
+  }
 
   public performBubbleSort(): void {
     if (this._isSorted) {

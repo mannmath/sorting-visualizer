@@ -40,6 +40,51 @@ export class SortingAlgorithmsService {
     }
     return animation;
   }
+
+  public getMergeSortAnimations(input: any[]) {
+    input.reverse();
+    this.mergeSort(input, 0, input.length - 1);
+    console.log(input);
+  }
+
+  private mergeSort(input: any[], left: number, right: number) {
+    if (right <= left) {
+      return;
+    }
+    let middle = Math.floor((left + right) / 2);
+    this.mergeSort(input, left, middle);
+    this.mergeSort(input, middle + 1, right);
+
+    let leftSubArr = input.slice(left, middle + 1),
+      rightSubArr = input.slice(middle + 1, right + 1);
+
+    let i = 0,
+      j = 0,
+      k = left;
+
+    while (i < leftSubArr.length && j < rightSubArr.length) {
+      if (leftSubArr[i] <= rightSubArr[j]) {
+        input[k] = leftSubArr[i];
+        i++;
+      } else {
+        input[k] = rightSubArr[j];
+        j++;
+      }
+      k++;
+    }
+
+    while (i < leftSubArr.length) {
+      input[k] = leftSubArr[i];
+      i++;
+      k++;
+    }
+
+    while (j < rightSubArr.length) {
+      input[k] = rightSubArr[j];
+      j++;
+      k++;
+    }
+  }
 }
 
 // // first layer
