@@ -85,18 +85,15 @@ export class VisualizerComponentComponent implements OnInit {
     }
   }
 
-  public performMergeSort(): void {
-    this.animator.getMergeSortAnimations([...this._targetArray]);
-  }
-
-  public performBubbleSort(): void {
+  public performSort(sortType: string): void {
     if (this._isSorted) {
       return;
     }
     this._sortInProgress = true;
-    let animations: any[] = this.animator.getbubbleSortAnimations([
-      ...this._targetArray,
-    ]);
+    let animations: any[] = this.animator.performSort(
+      [...this._targetArray],
+      sortType
+    );
     this.disableOrEnableButtonsDuringSort('disable');
     let timeMultiplier = 1;
     let lastFinalizedIndex = this._targetArray.length;
