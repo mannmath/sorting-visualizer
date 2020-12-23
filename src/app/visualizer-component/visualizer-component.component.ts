@@ -1,5 +1,4 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { SortingAlgorithmsService } from '../sorting-algorithms.service';
 
 // how many elements should be drawn in the array
@@ -29,10 +28,7 @@ export class VisualizerComponentComponent implements OnInit {
   _targetArray = [];
   _sortInProgress = false;
   _isSorted = false;
-  constructor(
-    public breakpointObserver: BreakpointObserver,
-    private animator: SortingAlgorithmsService
-  ) {}
+  constructor(private animator: SortingAlgorithmsService) {}
 
   public setTargetArray(array: any[]) {
     this._targetArray = array;
@@ -51,16 +47,6 @@ export class VisualizerComponentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log(window.innerWidth);
-    // this.breakpointObserver
-    //   .observe(['(min-width: 400px)'])
-    //   .subscribe((state: BreakpointState) => {
-    //     if (state.matches) {
-    //       document.body.style.backgroundColor = 'yellow';
-    //     } else {
-    //       document.body.style.backgroundColor = 'purple';
-    //     }
-    //   });
     this.randomizeAndDrawArray();
   }
 
@@ -68,15 +54,15 @@ export class VisualizerComponentComponent implements OnInit {
     this._isSorted = false;
     this.disableOrEnableButtonsDuringSort('enable');
 
-    const array: any[] = [50, 10, 80, 20, 40];
-    // const array: any[] = [];
-    // for (let index = 0; index < length_of_array; index++) {
-    //   const element = getRandomizedHeight(
-    //     START_HEIGHT_OF_ARRAY_ELEM,
-    //     MAX_HEIGHT_OF_ARRAY_ELEM
-    //   );
-    //   array.push(element);
-    // }
+    // const array: any[] = [50, 10, 80, 20, 40];
+    const array: any[] = [];
+    for (let index = 0; index < length_of_array; index++) {
+      const element = getRandomizedHeight(
+        START_HEIGHT_OF_ARRAY_ELEM,
+        MAX_HEIGHT_OF_ARRAY_ELEM
+      );
+      array.push(element);
+    }
 
     // reverse is done because our visualizer is 180 rotated.
     array.reverse();
@@ -98,7 +84,6 @@ export class VisualizerComponentComponent implements OnInit {
     );
     this.disableOrEnableButtonsDuringSort('disable');
     let timeMultiplier = 1;
-    let lastFinalizedIndex = this._targetArray.length;
     for (const animation of animations) {
       // first highlight the currently compared elements
       setTimeout(() => {
@@ -118,11 +103,6 @@ export class VisualizerComponentComponent implements OnInit {
             this.findAndColorElement(parseInt(index), SWAP_COLOR);
           }
         }, ANIMATION_SPEED * timeMultiplier + ANIMATION_SPEED / 2);
-        setTimeout(() => {
-          for (const index of Object.keys(animation.post_compare)) {
-            this.findAndColorElement(parseInt(index), INITIAL_COLOR);
-          }
-        }, ANIMATION_SPEED * timeMultiplier + ANIMATION_SPEED / 2 + 500);
       }
 
       // reset bars to the initial color after swap check
@@ -130,24 +110,28 @@ export class VisualizerComponentComponent implements OnInit {
         for (const index of animation.compared) {
           this.findAndColorElement(index, INITIAL_COLOR);
         }
+        if (animation.swapped) {
+          for (const index of Object.keys(animation.post_compare)) {
+            this.findAndColorElement(parseInt(index), INITIAL_COLOR);
+          }
+        }
       }, ANIMATION_SPEED * timeMultiplier + ANIMATION_SPEED / 1.4285);
 
       // animate finalized element if any
-      setTimeout(() => {
-        if (animation.finalized) {
+      if (animation.finalized != undefined) {
+        setTimeout(() => {
           this.findAndColorElement(
             animation.finalized,
             FINALIZED_POSITION_COLOR
           );
-          lastFinalizedIndex = animation.finalized;
-        }
-      }, ANIMATION_SPEED * timeMultiplier + ANIMATION_SPEED / 1.4285);
+        }, ANIMATION_SPEED * timeMultiplier + ANIMATION_SPEED / 1.4285);
+      }
       timeMultiplier += 1;
     }
 
     // animate remaining indices as finalized, as sorting is now finished.
     setTimeout(() => {
-      for (let index = 0; index < lastFinalizedIndex; index++) {
+      for (let index = 0; index < this._targetArray.length; index++) {
         this.findAndColorElement(index, FINALIZED_POSITION_COLOR);
       }
       this._isSorted = true;

@@ -47,12 +47,12 @@ export class SortingAlgorithmsService {
         let animation_object = {};
         animation_object['compared'] = [minIdx, i];
         animation_object['swapped'] = true;
-        let temp = input[minIdx];
-        input[minIdx] = input[i];
-        input[i] = temp;
         animation_object['post_compare'] = {};
         animation_object['post_compare'][minIdx] = input[i];
         animation_object['post_compare'][i] = input[minIdx];
+        let temp = input[minIdx];
+        input[minIdx] = input[i];
+        input[i] = temp;
         animation_object['finalized'] = i;
         this.animations.push(animation_object);
       }
