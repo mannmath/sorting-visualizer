@@ -18,7 +18,7 @@ const SWAP_COLOR = 'green';
 // color when the position of an element in finalized
 const FINALIZED_POSITION_COLOR = 'violet';
 // control animation speed (in millis)
-const ANIMATION_SPEED = 10;
+const ANIMATION_SPEED = 500;
 
 @Component({
   selector: 'app-visualizer-component',
@@ -65,9 +65,10 @@ export class VisualizerComponentComponent implements OnInit {
   }
 
   public randomizeAndDrawArray(): void {
-    const array: any[] = [50, 10, 80, 20, 40];
     this._isSorted = false;
     this.disableOrEnableButtonsDuringSort('enable');
+
+    const array: any[] = [50, 10, 80, 20, 40];
     // const array: any[] = [];
     // for (let index = 0; index < length_of_array; index++) {
     //   const element = getRandomizedHeight(
@@ -76,6 +77,7 @@ export class VisualizerComponentComponent implements OnInit {
     //   );
     //   array.push(element);
     // }
+
     // reverse is done because our visualizer is 180 rotated.
     array.reverse();
     this.setTargetArray(array);
@@ -116,6 +118,11 @@ export class VisualizerComponentComponent implements OnInit {
             this.findAndColorElement(parseInt(index), SWAP_COLOR);
           }
         }, ANIMATION_SPEED * timeMultiplier + ANIMATION_SPEED / 2);
+        setTimeout(() => {
+          for (const index of Object.keys(animation.post_compare)) {
+            this.findAndColorElement(parseInt(index), INITIAL_COLOR);
+          }
+        }, ANIMATION_SPEED * timeMultiplier + ANIMATION_SPEED / 2 + 500);
       }
 
       // reset bars to the initial color after swap check
@@ -173,15 +180,20 @@ export class VisualizerComponentComponent implements OnInit {
     let bubbleSortButton = <HTMLButtonElement>(
       document.getElementById('bubblesort-button')
     );
+    let selectionSortButton = <HTMLButtonElement>(
+      document.getElementById('selectionsort-button')
+    );
     // TODO: add other buttons here
     if (action == 'disable') {
       randomizeButton.disabled = true;
       mergeSortButton.disabled = true;
       bubbleSortButton.disabled = true;
+      selectionSortButton.disabled = true;
     } else {
       if (!this._isSorted) {
         mergeSortButton.disabled = false;
         bubbleSortButton.disabled = false;
+        selectionSortButton.disabled = false;
       }
       randomizeButton.disabled = false;
     }

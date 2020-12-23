@@ -19,13 +19,47 @@ export class SortingAlgorithmsService {
         this.getMergeSortAnimations(input);
         break;
 
+      case 'selection':
+        this.getSelectionSortAnimations(input);
+        break;
+
       default:
         break;
     }
+    console.log(this.animations);
     return this.animations;
   }
 
-  public getBubbleSortAnimations(input: any[]) {
+  getSelectionSortAnimations(input: any[]) {
+    for (let i = 0; i < input.length; i++) {
+      let minIdx = i;
+      let minFound = false;
+      for (let j = i + 1; j < input.length; j++) {
+        let animation_object = {};
+        animation_object['compared'] = [minIdx, j];
+        if (input[minIdx] > input[j]) {
+          minIdx = j;
+          minFound = true;
+        }
+        this.animations.push(animation_object);
+      }
+      if (minFound) {
+        let animation_object = {};
+        animation_object['compared'] = [minIdx, i];
+        animation_object['swapped'] = true;
+        let temp = input[minIdx];
+        input[minIdx] = input[i];
+        input[i] = temp;
+        animation_object['post_compare'] = {};
+        animation_object['post_compare'][minIdx] = input[i];
+        animation_object['post_compare'][i] = input[minIdx];
+        animation_object['finalized'] = i;
+        this.animations.push(animation_object);
+      }
+    }
+  }
+
+  private getBubbleSortAnimations(input: any[]) {
     // reverse is done to balance out the earlier reverse.
     var isSwapped: boolean = false;
     for (let i = 0; i < input.length; i++) {
@@ -57,11 +91,10 @@ export class SortingAlgorithmsService {
     }
   }
 
-  public getMergeSortAnimations(input: any[]) {
-    input.reverse();
+  private getMergeSortAnimations(input: any[]) {
+    // input.reverse();
     // var animation = [];
     this.mergeSort(input, 0, input.length - 1);
-    console.log(this.animations);
   }
 
   private mergeSort(input: any[], left: number, right: number) {
@@ -80,19 +113,15 @@ export class SortingAlgorithmsService {
       k = left;
 
     while (i < leftSubArr.length && j < rightSubArr.length) {
-      // console.log('compare ' + leftSubArr[i] + ' with ' + rightSubArr[j]);
-      console.log('compare ' + (left + i) + ' with ' + (middle + 1 + j));
       let animation_object = {};
-      animation_object['compared'] = [left + i, middle + j];
+      animation_object['compared'] = [left + i, middle + 1 + j];
+      animation_object['swapped'] = true;
+      animation_object['post_compare'] = {};
       if (leftSubArr[i] <= rightSubArr[j]) {
-        console.log('at index: ' + k + ' added : ' + leftSubArr[i]);
-        // animation_object['post_compare'][k] = leftSubArr[i];
+        animation_object['post_compare'][k] = leftSubArr[i];
         input[k] = leftSubArr[i];
         i++;
       } else {
-        console.log('at index: ' + k + ' added : ' + rightSubArr[j]);
-        animation_object['swapped'] = true;
-        animation_object['post_compare'] = {};
         animation_object['post_compare'][k] = rightSubArr[j];
         input[k] = rightSubArr[j];
         j++;
@@ -102,11 +131,8 @@ export class SortingAlgorithmsService {
     }
 
     while (i < leftSubArr.length) {
-      console.log(
-        'at index: ' + k + ' just value added from left : ' + leftSubArr[i]
-      );
       let animation_object = {};
-      animation_object['compared'] = [left + i, middle + j];
+      animation_object['compared'] = [left + i, middle + 1 + j];
       animation_object['swapped'] = true;
       animation_object['post_compare'] = {};
       animation_object['post_compare'][k] = leftSubArr[i];
@@ -117,11 +143,8 @@ export class SortingAlgorithmsService {
     }
 
     while (j < rightSubArr.length) {
-      console.log(
-        'at index: ' + k + ' just value added from right : ' + rightSubArr[j]
-      );
       let animation_object = {};
-      animation_object['compared'] = [left + i, middle + j];
+      animation_object['compared'] = [left + i, middle + 1 + j];
       animation_object['swapped'] = true;
       animation_object['post_compare'] = {};
       animation_object['post_compare'][k] = rightSubArr[j];
