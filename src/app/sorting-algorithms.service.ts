@@ -9,6 +9,7 @@ export class SortingAlgorithmsService {
 
   public performSort(input: any[], sortType: string): any[] {
     this.animations = [];
+    // reverse is done to balance out the earlier reverse.
     input.reverse();
     switch (sortType) {
       case 'bubble':
@@ -23,11 +24,51 @@ export class SortingAlgorithmsService {
         this.getSelectionSortAnimations(input);
         break;
 
+      case 'quick':
+        this.getQuickSortAnimations(input);
+        break;
+
       default:
         break;
     }
     console.log(this.animations);
     return this.animations;
+  }
+  getQuickSortAnimations(input: any[]) {
+    console.log(input);
+    this.quickSort(input, 0, input.length - 1);
+    console.log(input);
+  }
+
+  quickSort(input: any[], start: number, end: number) {
+    if (start >= end) {
+      return;
+    }
+    // In quick sort, we make an index pivot and try to find its position.
+    let pivotIndex = this.findPivot(input, start, end);
+
+    this.quickSort(input, start, pivotIndex - 1);
+    this.quickSort(input, pivotIndex + 1, end);
+  }
+
+  findPivot(input: any[], start: number, end: number) {
+    let pivot = input[end];
+    let positionPointer = start - 1;
+    for (let j = start; j < end; j++) {
+      if (input[j] < pivot) {
+        positionPointer++;
+        let temp = input[positionPointer];
+        input[positionPointer] = input[j];
+        input[j] = temp;
+      }
+    }
+    // At this point ptr should be pointing to the pivot element.
+    // If not, it means the position of pivot element is not correct. So, switch them.
+    let temp = input[positionPointer + 1];
+    input[positionPointer + 1] = input[end];
+    input[end] = temp;
+
+    return positionPointer + 1;
   }
 
   getSelectionSortAnimations(input: any[]) {
@@ -60,7 +101,6 @@ export class SortingAlgorithmsService {
   }
 
   private getBubbleSortAnimations(input: any[]) {
-    // reverse is done to balance out the earlier reverse.
     var isSwapped: boolean = false;
     for (let i = 0; i < input.length; i++) {
       for (let j = 0; j < input.length - i - 1; j++) {
