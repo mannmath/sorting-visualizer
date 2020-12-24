@@ -54,15 +54,15 @@ export class VisualizerComponentComponent implements OnInit {
     this._isSorted = false;
     this.disableOrEnableButtonsDuringSort('enable');
 
-    // const array: any[] = [50, 10, 80, 20, 40];
-    const array: any[] = [];
-    for (let index = 0; index < length_of_array; index++) {
-      const element = getRandomizedHeight(
-        START_HEIGHT_OF_ARRAY_ELEM,
-        MAX_HEIGHT_OF_ARRAY_ELEM
-      );
-      array.push(element);
-    }
+    const array: any[] = [50, 10, 80, 20, 40];
+    // const array: any[] = [];
+    // for (let index = 0; index < length_of_array; index++) {
+    //   const element = getRandomizedHeight(
+    //     START_HEIGHT_OF_ARRAY_ELEM,
+    //     MAX_HEIGHT_OF_ARRAY_ELEM
+    //   );
+    //   array.push(element);
+    // }
 
     // reverse is done because our visualizer is 180 rotated.
     array.reverse();
@@ -167,17 +167,22 @@ export class VisualizerComponentComponent implements OnInit {
     let selectionSortButton = <HTMLButtonElement>(
       document.getElementById('selectionsort-button')
     );
+    let quickSortButton = <HTMLButtonElement>(
+      document.getElementById('quicksort-button')
+    );
     // TODO: add other buttons here
     if (action == 'disable') {
       randomizeButton.disabled = true;
       mergeSortButton.disabled = true;
       bubbleSortButton.disabled = true;
       selectionSortButton.disabled = true;
+      quickSortButton.disabled = true;
     } else {
       if (!this._isSorted) {
         mergeSortButton.disabled = false;
         bubbleSortButton.disabled = false;
         selectionSortButton.disabled = false;
+        quickSortButton.disabled = false;
       }
       randomizeButton.disabled = false;
     }
@@ -187,15 +192,3 @@ export class VisualizerComponentComponent implements OnInit {
 function getRandomizedHeight(from: number, to: number) {
   return Math.floor(Math.random() * (to - from + 1) + from);
 }
-
-// function myFunction(x) {
-//   if (x.matches) {
-//     // If media query matches
-//     LENGTH_OF_ARRAY = 50;
-//     new VisualizerComponentComponent().randomizeAndDrawArray();
-//   }
-// }
-
-// var x = window.matchMedia('(max-width: 1010px)');
-// myFunction(x); // Call listener function at run time
-// x.addListener(myFunction); // Attach listener function on state changes

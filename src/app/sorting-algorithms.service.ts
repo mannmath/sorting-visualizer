@@ -31,7 +31,6 @@ export class SortingAlgorithmsService {
       default:
         break;
     }
-    console.log(this.animations);
     return this.animations;
   }
   getQuickSortAnimations(input: any[]) {
