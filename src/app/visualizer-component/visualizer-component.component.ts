@@ -17,7 +17,7 @@ const SWAP_COLOR = 'green';
 // color when the position of an element in finalized
 const FINALIZED_POSITION_COLOR = 'violet';
 // control animation speed (in millis)
-const ANIMATION_SPEED = 500;
+const ANIMATION_SPEED = 200;
 
 @Component({
   selector: 'app-visualizer-component',
@@ -54,15 +54,15 @@ export class VisualizerComponentComponent implements OnInit {
     this._isSorted = false;
     this.disableOrEnableButtonsDuringSort('enable');
 
-    const array: any[] = [50, 10, 80, 20, 40];
-    // const array: any[] = [];
-    // for (let index = 0; index < length_of_array; index++) {
-    //   const element = getRandomizedHeight(
-    //     START_HEIGHT_OF_ARRAY_ELEM,
-    //     MAX_HEIGHT_OF_ARRAY_ELEM
-    //   );
-    //   array.push(element);
-    // }
+    // const array: any[] = [50, 10, 80, 20, 40];
+    const array: any[] = [];
+    for (let index = 0; index < length_of_array; index++) {
+      const element = getRandomizedHeight(
+        START_HEIGHT_OF_ARRAY_ELEM,
+        MAX_HEIGHT_OF_ARRAY_ELEM
+      );
+      array.push(element);
+    }
 
     // reverse is done because our visualizer is 180 rotated.
     array.reverse();

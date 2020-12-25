@@ -34,9 +34,7 @@ export class SortingAlgorithmsService {
     return this.animations;
   }
   getQuickSortAnimations(input: any[]) {
-    console.log(input);
     this.quickSort(input, 0, input.length - 1);
-    console.log(input);
   }
 
   quickSort(input: any[], start: number, end: number) {
@@ -54,15 +52,34 @@ export class SortingAlgorithmsService {
     let pivot = input[end];
     let positionPointer = start - 1;
     for (let j = start; j < end; j++) {
+      let animation_object = {};
+      animation_object['compared'] = [end, j];
       if (input[j] < pivot) {
         positionPointer++;
+
+        // store animations before the actual swap occurs
+        animation_object['swapped'] = true;
+        animation_object['post_compare'] = {};
+        animation_object['post_compare'][positionPointer] = input[j];
+        animation_object['post_compare'][j] = input[positionPointer];
+
         let temp = input[positionPointer];
         input[positionPointer] = input[j];
         input[j] = temp;
       }
+      this.animations.push(animation_object);
     }
-    // At this point ptr should be pointing to the pivot element.
-    // If not, it means the position of pivot element is not correct. So, switch them.
+    // add the animation
+    let animation_object = {};
+    animation_object['compared'] = [end, positionPointer + 1];
+    animation_object['swapped'] = true;
+    animation_object['post_compare'] = {};
+    animation_object['post_compare'][positionPointer + 1] = input[end];
+    animation_object['post_compare'][end] = input[positionPointer + 1];
+    animation_object['finalized'] = positionPointer + 1;
+    this.animations.push(animation_object);
+
+    // At this point, ptr should be pointing to the actual position of pivot element.
     let temp = input[positionPointer + 1];
     input[positionPointer + 1] = input[end];
     input[end] = temp;
