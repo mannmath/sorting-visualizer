@@ -16,6 +16,12 @@
     display: block;
     margin: 5px 0;
   }
+  .dropdown-menu {
+    width: 100%;
+  }
+  .slider {
+    width: 100%;
+  }
 }
 
 /* Sort visualizer */
@@ -32,4 +38,8 @@
   display: inline-block;
   vertical-align: bottom;
   margin: 2px 1px 0px 1px;
+}
+.adjust {
+  color: white;
+  display: inline;
 }

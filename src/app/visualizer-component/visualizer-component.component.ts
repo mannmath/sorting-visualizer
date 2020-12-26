@@ -17,7 +17,7 @@ const SWAP_COLOR = 'green';
 // color when the position of an element in finalized
 const FINALIZED_POSITION_COLOR = 'violet';
 // control animation speed (in millis)
-const ANIMATION_SPEED = 200;
+var ANIMATION_SPEED = 1000;
 
 @Component({
   selector: 'app-visualizer-component',
@@ -48,6 +48,10 @@ export class VisualizerComponentComponent implements OnInit {
 
   ngOnInit(): void {
     this.randomizeAndDrawArray();
+  }
+
+  public onSliderChange(value) {
+    ANIMATION_SPEED = parseInt(value);
   }
 
   public randomizeAndDrawArray(): void {
@@ -82,7 +86,7 @@ export class VisualizerComponentComponent implements OnInit {
       [...this._targetArray],
       sortType
     );
-    this.disableOrEnableButtonsDuringSort('disable');
+    this.disableOrEnableButtonsDuringSort('disable', sortType);
     let timeMultiplier = 1;
     for (const animation of animations) {
       // first highlight the currently compared elements
@@ -154,37 +158,50 @@ export class VisualizerComponentComponent implements OnInit {
     }
   }
 
-  private disableOrEnableButtonsDuringSort(action: string) {
+  private disableOrEnableButtonsDuringSort(
+    action: string,
+    sortType = 'default'
+  ) {
     let randomizeButton = <HTMLButtonElement>(
       document.getElementById('randomize-array')
     );
-    let mergeSortButton = <HTMLButtonElement>(
-      document.getElementById('mergesort-button')
+    let dropdownMenuButton = <HTMLButtonElement>(
+      document.getElementById('dropdownMenuButton')
     );
-    let bubbleSortButton = <HTMLButtonElement>(
-      document.getElementById('bubblesort-button')
-    );
-    let selectionSortButton = <HTMLButtonElement>(
-      document.getElementById('selectionsort-button')
-    );
-    let quickSortButton = <HTMLButtonElement>(
-      document.getElementById('quicksort-button')
-    );
+    let timerSlider = <HTMLInputElement>document.getElementById('slider');
+
     // TODO: add other buttons here
     if (action == 'disable') {
       randomizeButton.disabled = true;
-      mergeSortButton.disabled = true;
-      bubbleSortButton.disabled = true;
-      selectionSortButton.disabled = true;
-      quickSortButton.disabled = true;
+      timerSlider.disabled = true;
+      switch (sortType) {
+        case 'quick':
+          dropdownMenuButton.innerText = 'Quick Sort';
+          break;
+
+        case 'bubble':
+          dropdownMenuButton.innerText = 'Bubble Sort';
+          break;
+
+        case 'selection':
+          dropdownMenuButton.innerText = 'Selection Sort';
+          break;
+
+        case 'merge':
+          dropdownMenuButton.innerText = 'Merge Sort';
+          break;
+
+        default:
+          break;
+      }
+      dropdownMenuButton.disabled = true;
     } else {
       if (!this._isSorted) {
-        mergeSortButton.disabled = false;
-        bubbleSortButton.disabled = false;
-        selectionSortButton.disabled = false;
-        quickSortButton.disabled = false;
+        dropdownMenuButton.disabled = false;
       }
+      dropdownMenuButton.innerText = 'Select Sorting Algo';
       randomizeButton.disabled = false;
+      timerSlider.disabled = false;
     }
   }
 }

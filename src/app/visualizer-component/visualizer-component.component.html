@@ -8,41 +8,40 @@
     Generate New Array
   </button>
 
-  <button
-    id="quicksort-button"
-    type="button"
-    class="btn btn-outline-success sort-button"
-    (click)="performSort('quick')"
-  >
-    Quick Sort
-  </button>
+  <span class="adjust">Modify Animation Speed </span>
+  <input
+    type="range"
+    min="100"
+    max="2000"
+    value="1000"
+    class="slider"
+    id="slider"
+    #slider
+    (change)="onSliderChange(slider.value)"
+  />
 
   <button
-    id="selectionsort-button"
+    class="btn btn-secondary dropdown-toggle"
     type="button"
-    class="btn btn-outline-success sort-button"
-    (click)="performSort('selection')"
+    id="dropdownMenuButton"
+    data-toggle="dropdown"
   >
-    Selection Sort
+    Select Sorting Algo
   </button>
-
-  <button
-    type="button"
-    class="btn btn-outline-success sort-button"
-    id="mergesort-button"
-    (click)="performSort('merge')"
-  >
-    Merge Sort
-  </button>
-
-  <button
-    id="bubblesort-button"
-    type="button"
-    class="btn btn-outline-success sort-button"
-    (click)="performSort('bubble')"
-  >
-    Bubble Sort
-  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="#" (click)="performSort('quick')"
+      >Quick Sort</a
+    >
+    <a class="dropdown-item" href="#" (click)="performSort('bubble')"
+      >Bubble Sort</a
+    >
+    <a class="dropdown-item" href="#" (click)="performSort('selection')"
+      >Selection Sort</a
+    >
+    <a class="dropdown-item" href="#" (click)="performSort('merge')"
+      >Merge Sort</a
+    >
+  </div>
 </div>
 <div class="sorting-area">
   <ng-container *ngFor="let value of _targetArray; let i = index">
