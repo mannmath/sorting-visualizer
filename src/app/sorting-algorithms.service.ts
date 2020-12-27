@@ -148,18 +148,22 @@ export class SortingAlgorithmsService {
   }
 
   private getMergeSortAnimations(input: any[]) {
-    // input.reverse();
-    // var animation = [];
-    this.mergeSort(input, 0, input.length - 1);
+    this.mergeSort(input, 0, input.length - 1, 0, input.length - 1);
   }
 
-  private mergeSort(input: any[], left: number, right: number) {
+  private mergeSort(
+    input: any[],
+    left: number,
+    right: number,
+    initial: number,
+    final: number
+  ) {
     if (right <= left) {
       return;
     }
     let middle = Math.floor((left + right) / 2);
-    this.mergeSort(input, left, middle);
-    this.mergeSort(input, middle + 1, right);
+    this.mergeSort(input, left, middle, initial, final);
+    this.mergeSort(input, middle + 1, right, initial, final);
 
     let leftSubArr = input.slice(left, middle + 1),
       rightSubArr = input.slice(middle + 1, right + 1);
@@ -182,6 +186,9 @@ export class SortingAlgorithmsService {
         input[k] = rightSubArr[j];
         j++;
       }
+      if (left == initial && right == final) {
+        animation_object['finalized'] = k;
+      }
       this.animations.push(animation_object);
       k++;
     }
@@ -192,6 +199,9 @@ export class SortingAlgorithmsService {
       animation_object['swapped'] = true;
       animation_object['post_compare'] = {};
       animation_object['post_compare'][k] = leftSubArr[i];
+      if (left == initial && right == final) {
+        animation_object['finalized'] = k;
+      }
       input[k] = leftSubArr[i];
       this.animations.push(animation_object);
       i++;
@@ -204,6 +214,9 @@ export class SortingAlgorithmsService {
       animation_object['swapped'] = true;
       animation_object['post_compare'] = {};
       animation_object['post_compare'][k] = rightSubArr[j];
+      if (left == initial && right == final) {
+        animation_object['finalized'] = k;
+      }
       input[k] = rightSubArr[j];
       this.animations.push(animation_object);
       j++;
@@ -211,57 +224,3 @@ export class SortingAlgorithmsService {
     }
   }
 }
-
-// // first layer
-// animation.push({
-//   compared: [0, 1],
-//   post_compare: { 0: 10, 1: 50 },
-//   swapped: true,
-// });
-// animation.push({
-//   compared: [1, 2],
-//   post_compare: { 1: 50, 2: 80 },
-//   swapped: false,
-// });
-// animation.push({
-//   compared: [2, 3],
-//   post_compare: { 2: 20, 3: 80 },
-//   swapped: true,
-// });
-// animation.push({
-//   compared: [3, 4],
-//   post_compare: { 3: 40, 4: 80 },
-//   swapped: true,
-//   finalized: 4,
-// });
-
-// // second layer
-// animation.push({
-//   compared: [0, 1],
-//   post_compare: { 0: 10, 1: 50 },
-//   swapped: false,
-// });
-// animation.push({
-//   compared: [1, 2],
-//   post_compare: { 1: 20, 2: 50 },
-//   swapped: true,
-// });
-// animation.push({
-//   compared: [2, 3],
-//   post_compare: { 2: 40, 3: 50 },
-//   swapped: true,
-//   finalized: 3,
-// });
-
-// // third layer
-// animation.push({
-//   compared: [0, 1],
-//   post_compare: { 0: 10, 1: 20 },
-//   swapped: false,
-// });
-// animation.push({
-//   compared: [1, 2],
-//   post_compare: { 1: 20, 2: 40 },
-//   swapped: false,
-//   finalized: 2,
-// });
