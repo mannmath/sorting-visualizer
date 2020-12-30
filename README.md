@@ -14,6 +14,8 @@ Enjoy!
 
 > Note. You can not regenarate a new array or switch to a different sorting algorithm while one sorting is in progress. You can not re-sort an already sorted array.
 
+This project can be accessed at https://mannmath.github.io/sorting-visualizer/
+
 # Auto Generated Documentation
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.2.0.
