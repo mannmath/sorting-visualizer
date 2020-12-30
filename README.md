@@ -12,7 +12,7 @@ Bars highlighted in red indicates comparison, greeen indicates swap/merge and pu
 
 Enjoy!
 
-> Note. You can not regenarate a new array or switch to a different sorting algorithm while one sorting is in progress. You can not re-sort an already sorted array.
+> Note: You can not regenarate a new array or switch to a different sorting algorithm while one sorting is in progress. You can not re-sort an already sorted array.
 
 This project can be accessed at https://mannmath.github.io/sorting-visualizer/
 
