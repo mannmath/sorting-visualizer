@@ -1,6 +1,16 @@
-# sorting-visualizer
+# Sorting Visualizer
 
-Simulate and visualize how different sorting techniques work with a responsive design
+Simulate and visualize how different sorting techniques work with a responsive design.
+
+Use the generate new array button to create a random array. It's size will be adjusted as per your window width.
+
+You can modify animation speed between 100ms to 2000ms. Note that, once the animation starts, you will not be able to change this.
+
+Choose the soritng algorithm from the dropdown that you want to visualize
+
+Enjoy!
+
+# Auto Generated Documentation
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.2.0.
 
