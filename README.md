@@ -6,9 +6,13 @@ Use the generate new array button to create a random array. It's size will be ad
 
 You can modify animation speed between 100ms to 2000ms. Note that, once the animation starts, you will not be able to change this.
 
-Choose the soritng algorithm from the dropdown that you want to visualize
+Choose the soritng algorithm from the dropdown that you want to visualize.
+
+Bars highlighted in red indicates comparison, greeen indicates swap/merge and purple indicates final location of that element.
 
 Enjoy!
+
+> Note. You can not regenarate a new array or switch to a different sorting algorithm while one sorting is in progress. You can not re-sort an already sorted array.
 
 # Auto Generated Documentation
 
